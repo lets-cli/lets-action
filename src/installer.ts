@@ -37,8 +37,6 @@ export async function getLets(version: string): Promise<string> {
 
 export const getFilename = (osPlat: string, osArch: string): string => {
   let arch: string;
-  core.info(`Platform ${osPlat}, arch: ${osArch}`);
-
   switch (osArch) {
     case 'x64': {
       arch = 'x86_64';

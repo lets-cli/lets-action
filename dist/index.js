@@ -163,22 +163,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getLets = void 0;
+exports.getFilename = exports.getLets = void 0;
 const os = __importStar(__nccwpck_require__(37));
 const path = __importStar(__nccwpck_require__(17));
 const util = __importStar(__nccwpck_require__(837));
 const github = __importStar(__nccwpck_require__(928));
 const core = __importStar(__nccwpck_require__(186));
 const tc = __importStar(__nccwpck_require__(784));
-const osPlat = os.platform();
-const osArch = os.arch();
 function getLets(version) {
     return __awaiter(this, void 0, void 0, function* () {
         const release = yield github.getRelease(version);
         if (!release) {
             throw new Error(`Cannot find Lets ${version} release`);
         }
-        const filename = getFilename();
+        const filename = (0, exports.getFilename)(os.platform(), os.arch());
         const downloadUrl = util.format('https://github.com/lets-cli/lets/releases/download/%s/%s', release, filename);
         core.info(`Downloading ${downloadUrl}`);
         const downloadPath = yield tc.downloadTool(downloadUrl);
@@ -194,20 +192,15 @@ function getLets(version) {
     });
 }
 exports.getLets = getLets;
-const getFilename = () => {
+const getFilename = (osPlat, osArch) => {
     let arch;
     switch (osArch) {
         case 'x64': {
             arch = 'x86_64';
             break;
         }
-        case 'x32': {
-            arch = 'i386';
-            break;
-        }
         case 'arm': {
-            const arm_version = process.config.variables.arm_version;
-            arch = arm_version ? 'armv' + arm_version : 'arm';
+            arch = 'arm64';
             break;
         }
         default: {
@@ -215,13 +208,11 @@ const getFilename = () => {
             break;
         }
     }
-    if (osPlat == 'darwin') {
-        arch = 'all';
-    }
     const platform = osPlat == 'darwin' ? 'Darwin' : 'Linux';
     const ext = 'tar.gz';
     return util.format('lets_%s_%s.%s', platform, arch, ext);
 };
+exports.getFilename = getFilename;
 //# sourceMappingURL=installer.js.map
 
 /***/ }),
