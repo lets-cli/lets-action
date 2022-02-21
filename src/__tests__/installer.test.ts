@@ -19,3 +19,20 @@ describe('installer', () => {
     .toThrow(`Cannot find Lets ${version} release`);
   }, 100000);
 });
+
+describe('getFilename', () => {
+  it('filename for linux amd64', () => {
+    const filename = installer.getFilename('linux', 'x64');
+    expect(filename).toBe('lets_Linux_x86_64.tar.gz');
+  });
+
+  it('filename for MacOS amd64', () => {
+    const filename = installer.getFilename('darwin', 'x64');
+    expect(filename).toBe('lets_Darwin_x86_64.tar.gz');
+  });
+  
+  it('filename for MacOS arm64', () => {
+    const filename = installer.getFilename('darwin', 'arm');
+    expect(filename).toBe('lets_Darwin_arm64.tar.gz');
+  });
+});

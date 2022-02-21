@@ -5,16 +5,13 @@ import * as github from './github';
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 
-const osPlat: string = os.platform();
-const osArch: string = os.arch();
-
 export async function getLets(version: string): Promise<string> {
   const release: string | null = await github.getRelease(version);
   if (!release) {
     throw new Error(`Cannot find Lets ${version} release`);
   }
 
-  const filename = getFilename();
+  const filename = getFilename(os.platform(), os.arch());
   const downloadUrl = util.format(
     'https://github.com/lets-cli/lets/releases/download/%s/%s',
     release,
@@ -38,29 +35,23 @@ export async function getLets(version: string): Promise<string> {
   return exePath;
 }
 
-const getFilename = (): string => {
+export const getFilename = (osPlat: string, osArch: string): string => {
   let arch: string;
+  core.info(`Platform ${osPlat}, arch: ${osArch}`);
+
   switch (osArch) {
     case 'x64': {
       arch = 'x86_64';
       break;
     }
-    case 'x32': {
-      arch = 'i386';
-      break;
-    }
     case 'arm': {
-      const arm_version = (process.config.variables as any).arm_version;
-      arch = arm_version ? 'armv' + arm_version : 'arm';
+      arch = 'arm64';
       break;
     }
     default: {
       arch = osArch;
       break;
     }
-  }
-  if (osPlat == 'darwin') {
-    arch = 'all';
   }
   const platform: string = osPlat == 'darwin' ? 'Darwin' : 'Linux';
   const ext: string = 'tar.gz';
