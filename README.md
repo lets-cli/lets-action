@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v2
       -
         name: Install Lets
-        uses: lets/lets-action@v1
+        uses: lets-cli/lets-action@v1
         with:
           version: latest
       -
