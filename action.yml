@@ -1,0 +1,14 @@
+name: 'Lets Action'
+description: 'GitHub Action for Lets task runner'
+author: 'kindermax'
+branding:
+  color: 'green'
+  icon: 'package'
+inputs:
+  version:
+    description: 'Lets version to install'
+    required: false
+    default: 'latest'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
