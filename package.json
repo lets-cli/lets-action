@@ -24,7 +24,7 @@
     "node": "16.14.0"
   },
   "dependencies": {
-    "@actions/core": "^1.6.0",
+    "@actions/core": "^1.9.1",
     "@actions/tool-cache": "^1.7.1"
   },
   "devDependencies": {
